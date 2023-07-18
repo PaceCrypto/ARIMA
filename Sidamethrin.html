@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Data Visualization</title>
+    <style>
+        /* Add any custom styling for your webpage here */
+    </style>
+</head>
+
+<body>
+    <h1>Data Visualization</h1>
+
+    <div id="chart-container">
+        <!-- The chart will be rendered inside this container -->
+    </div>
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script>
+        // JavaScript code to fetch the data and create the chart
+        // Replace the URL with the appropriate path to your Python-generated CSV file
+        const dataUrl = "/path/to/your/csv/file.csv";
+
+        // Fetch the data from the CSV file
+        fetch(dataUrl)
+            .then(response => response.text())
+            .then(csvData => {
+                // Parse the CSV data
+                const parsedData = Plotly.d3.csv.parse(csvData);
+
+                // Extract the Month and Sales columns from the parsed data
+                const months = parsedData.map(row => row.Month);
+                const sales = parsedData.map(row => row.Sales);
+
+                // Create the chart using Plotly.js
+                const data = [{
+                    x: months,
+                    y: sales,
+                    type: "line",
+                    name: "Sales"
+                }];
+
+                const layout = {
+                    title: "Sidamethrin 400ml",
+                    xaxis: {
+                        title: "Bulan"
+                    },
+                    yaxis: {
+                        title: "Penjualan"
+                    }
+                };
+
+                Plotly.newPlot("chart-container", data, layout);
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+            });
+    </script>
+</body>
+
+</html>
